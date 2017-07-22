@@ -13,8 +13,15 @@
 # limitations under the License.
 
 import os
+import keys
 import tweepy
 from flask import Flask, jsonify
+
+#Twetter auth
+auth = tweepy.OAuthHandler(keys.consumer_key, keys.consumer_secret)
+auth.set_access_token(keys.access_token, keys.access_token_secret)
+api = tweepy.API(auth)
+
 
 app = Flask(__name__)
 
