@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import tweepy
 from flask import Flask, jsonify
 
 app = Flask(__name__)
