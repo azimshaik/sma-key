@@ -14,14 +14,23 @@
 
 import os
 import keys
+import time
+import json
 import tweepy
+import config
 from flask import Flask, jsonify
+from watson_developer_cloud import ToneAnalyzerV3
 
 #Twetter auth
 auth = tweepy.OAuthHandler(keys.consumer_key, keys.consumer_secret)
 auth.set_access_token(keys.access_token, keys.access_token_secret)
 api = tweepy.API(auth)
 
+#watson auth
+tone_analyzer = ToneAnalyzerV3(
+    username=config.username,
+    password=config.password,
+    version='2017-06-16')
 
 app = Flask(__name__)
 
