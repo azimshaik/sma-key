@@ -18,7 +18,10 @@ import time
 import json
 import tweepy
 import config
-from flask import Flask, jsonify
+from tweetClass import Tweet
+from Tone_Category_Class import Tone
+from Tone_Category_Class import ToneCategory
+from flask import Flask, jsonify, render_template
 from watson_developer_cloud import ToneAnalyzerV3
 
 #Twetter auth
@@ -32,7 +35,81 @@ tone_analyzer = ToneAnalyzerV3(
     password=config.password,
     version='2017-06-16')
 
+#get data from twitter - mentions timeline tweets
+tweetObjsArray = []
+public_tweets = api.mentions_timeline()
+for tweet in public_tweets:
+    #userinfo(tweet.text,tweet.user,tweet.id)
+    tweeturl = 'https://twitter.com/'+tweet.user.screen_name+'/status/'+str(tweet.id)
+    tweetObj = Tweet(tweet.id,tweet.user.screen_name, tweet.text, tweeturl)
+    tweetObjsArray.append(tweetObj)
+tweetArrayLen = len(tweetObjsArray)
+print tweetArrayLen
+
+def toneAnalyzHelper(result2):
+    length = len(result2['document_tone']['tone_categories'][0]['tones'])
+    print time.asctime( time.localtime(time.time()) )
+    print '----------------------------------------------------------'
+    #looping through tone_categories
+    toneCatLength = len(result2['document_tone']['tone_categories'])
+    i=0
+    toneCategoryArray  = []
+    while i<toneCatLength:
+        tonesLength = len(result2['document_tone']['tone_categories'][i]['tones'])
+        j=0
+        category_name = result2['document_tone']['tone_categories'][i]['category_name']
+        category_id = result2['document_tone']['tone_categories'][i]['category_id']
+        print 'Tone Category: '+ category_name
+        print '-------------------------------'
+        tonesArray =  []
+        while j<tonesLength:
+            tone_Name =  result2['document_tone']['tone_categories'][i]['tones'][j]['tone_name']
+            score = result2['document_tone']['tone_categories'][i]['tones'][j]['score']
+            tone_Id = result2['document_tone']['tone_categories'][i]['tones'][j]['tone_id']
+            print 'Tone Name: ' + tone_Name
+            print 'Score%:  ' 
+            print score*100
+            tone = Tone(tone_Name, score, tone_Id)
+            j+=1
+            tonesArray.append(tone)
+        print '----------------------------------------------------------'
+        toneCategory = ToneCategory(category_id,tonesArray, category_name)
+        i+=1
+        toneCategoryArray.append(toneCategory)
+    return toneCategoryArray, tonesArray
+#k=0
+#while k < tweetArrayLen:
+    #result2 = tone_analyzer.tone(text=tweetObjsArray[k].tweet)
+    #print tweetObjsArray[k].tweet
+    #print "Response URL:"+ tweetObjsArray[k].url
+    #print "Response URL:"+ tweetObjsArray[k].url
+    #toneAnalyzHelper(result2)
+    #k+=1
+
+print 'Unit test was successful'
+
+    
+#print toneCategoryArray[0].category_id
+tonesArray = []
+
+
 app = Flask(__name__)
+
+@app.route('/home')
+def home():
+    name = 'azim'
+    print tweetObjsArray
+    watsonresponseArray = []
+    k=0
+    while k< tweetArrayLen:
+        print tweetObjsArray[k].tweet
+        print "Response URL:"+ tweetObjsArray[k].url
+        result2 = tone_analyzer.tone(text=tweetObjsArray[k].tweet)
+        watsonresponse = (json.dumps(result2,indent=2))
+        watsonresponseArray.append(watsonresponse)
+        k+=1
+    age = 24
+    return render_template('home.html',tweetObjsArray=tweetObjsArray, watsonresponseArray=watsonresponseArray)
 
 @app.route('/')
 def Welcome():
