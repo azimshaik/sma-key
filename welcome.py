@@ -106,6 +106,7 @@ def home():
         print "Response URL:"+ tweetObjsArray[k].url
         result2 = tone_analyzer.tone(text=tweetObjsArray[k].tweet)
         watsonresponse = (json.dumps(result2,indent=2))
+        print watsonresponse
         watsonresponseArray.append(watsonresponse)
         k+=1
     age = 24
