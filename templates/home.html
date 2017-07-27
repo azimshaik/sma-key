@@ -4,8 +4,9 @@
 <head>
     <title>Python Flask Bucket List App</title>
     <script type="text/javascript">
-        var resp = {{ watsonresponseArray[0] }};
-        console.log(JSON.parse(resp));
+         
+        var resp = '{{ watsonresponseArray|tojson }}';
+        console.log(resp);
     </script>
  
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
