@@ -3,7 +3,10 @@
  
 <head>
     <title>Python Flask Bucket List App</title>
- 
+    <script type="text/javascript">
+        var resp = {{ watsonresponseArray[0] }};
+        console.log(JSON.parse(resp));
+    </script>
  
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
  
@@ -22,6 +25,7 @@
         </div>
     <div>
     <div class="container">
+        <h1>{{ watsonresponseArray[0] }}<h1>
         <h1>Hello {{ tweetObjsArray[0].tweet }}!</h1>
         <div class="header">
             <nav>
