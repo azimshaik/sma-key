@@ -97,21 +97,22 @@ app = Flask(__name__)
 
 @app.route('/home')
 def home():
-    name = 'azim'
     print tweetObjsArray
     watsonresponseArray = []
     k=0
     while k< tweetArrayLen:
-        print tweetObjsArray[k].tweet
-        print "Response URL:"+ tweetObjsArray[k].url
+        #print tweetObjsArray[k].tweet
+        #print "Response URL:"+ tweetObjsArray[k].url
         result2 = tone_analyzer.tone(text=tweetObjsArray[k].tweet)
+        #print result2
         watsonresponse = (json.dumps(result2,indent=2))
-        print watsonresponse
+        #watsonresponse = (json.loads(result2))
+        #print type(watsonresponse)
         watsonresponseArray.append(watsonresponse)
         k+=1
-    age = 24
+        print type(watsonresponseArray)
     return render_template('home.html',tweetObjsArray=tweetObjsArray, watsonresponseArray=watsonresponseArray)
-
+#
 @app.route('/')
 def Welcome():
     return app.send_static_file('index.html')
@@ -119,6 +120,24 @@ def Welcome():
 @app.route('/myapp')
 def WelcomeToMyapp():
     return 'Welcome again to my app running on Bluemix!'
+
+@app.route('/api/watson')
+def GetWatson():
+    watsonresponseArray = []
+    k=0
+    while k< tweetArrayLen:
+        #print tweetObjsArray[k].tweet
+        #print "Response URL:"+ tweetObjsArray[k].url
+        result2 = tone_analyzer.tone(text=tweetObjsArray[k].tweet)
+        #print result2
+        watsonresponse = (json.dumps(result2,indent=2))
+        #watsonresponse = (json.loads(result2))
+        #print type(watsonresponse)
+        watsonresponseArray.append(watsonresponse)
+        k+=1
+        #print type(watsonresponseArray)
+    return jsonify(results=watsonresponseArray)
+
 
 @app.route('/api/people')
 def GetPeople():
