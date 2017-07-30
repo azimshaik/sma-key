@@ -1,7 +1,6 @@
-<script type="text/javascript">
         $(document).ready(function(){
             $.ajax({
-               url:'/api/watson',
+               url:'http://sma-key.mybluemix.net/api/watson',
                success: function(a,b,c){
                    //console.log(a);
                    $.each(a.results,function(i,v){
@@ -26,4 +25,3 @@
             // });
             
         });
-    </script>
