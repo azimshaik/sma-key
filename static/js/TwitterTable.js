@@ -1,7 +1,7 @@
 <script type="text/javascript">
         $(document).ready(function(){
             $.ajax({
-               url:'http://0.0.0.0:5000/api/watson',
+               url:'/api/watson',
                success: function(a,b,c){
                    //console.log(a);
                    $.each(a.results,function(i,v){
