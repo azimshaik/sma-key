@@ -3,16 +3,48 @@
  
 <head>
     <title>Python Flask Bucket List App</title>
-    <script type="text/javascript">
-         
-        var resp = '{{ watsonresponseArray|tojson }}';
-        console.log(resp);
-    </script>
- 
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
- 
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='stylesheets/jquery.dynatable.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='stylesheets/TwitterTable.css') }}">
+    <!-- <link href="css/jquery.dynatable.css" rel="stylesheet" /> -->
+    <!-- <link href="css/TwitterTable.css" rel="stylesheet" /> -->
+    <script src="{{url_for('static', filename='js/jquery-1.9.1.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.dynatable.js')}}"></script>
+    <script src="{{url_for('static', filename='js/TwitterTable.js')}}"></script>
+    <!-- <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.dynatable.js"></script>
+    <script src="js/TwitterTable.js"></script> -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $.ajax({
+               url:'/api/watson',
+               success: function(a,b,c){
+                   //console.log(a);
+                   $.each(a.results,function(i,v){
+                        if(i==1){
+                            console.log(v);
+                        }
+                   });
+               } 
+            });
+            // $.each(resp,function(i,v){
+            //     //console.log(v);
+
+            // });
+            // var resp = JSON.stringify(resp)
+            // console.log(resp)
+            // var resp = JSON.parse(resp)
+            // console.log(resp)
+            // $.each(resp, function(i,v){
+            //     $.each(v,function(index, val){
+            //         console.log(val)
+            //     });
+            // });
+            
+        });
+    </script>
  
 </head>
  
@@ -20,63 +52,33 @@
     
     <div class="container">
         <div class="row">
-            <div class="col">
-                test
-            </div>
+            <table id="my-final-table" class="table table-striped">
+                <thead>
+                    <!--<th data-dynatable-sorts="name">Id</th>-->
+                <th>Username</th>
+                <th>Tweet</th>
+                <th>AngerScore</th>
+                <th>DisgustScore</th>
+                <th>FearScore</th>
+                <th>JoyScore</th>
+                <th>SadnessScore</th>
+                <th>AnalyticalScore</th>
+                <th>ConfidentScore</th>
+                <th>TentativeScore</th>
+                <th>OpennessScore</th>
+                <th>ConscientiousnessScore</th>
+                <th>ExtraversionScore</th>
+                <th>AgreeablenessScore</th>
+                <th>Emotional_rangeScore</th>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
-    <div>
-    <div class="container">
-        <h1>{{ watsonresponseArray[0] }}<h1>
-        <h1>Hello {{ tweetObjsArray[0].tweet }}!</h1>
-        <div class="header">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a>
-                    </li>
-                    <li role="presentation"><a href="#">Sign In</a>
-                    </li>
-                    <li role="presentation"><a href="showSignUp">Sign Up</a>
-                    </li>
-                </ul>
-            </nav>
-            <h3 class="text-muted">Social Media Anaylysis</h3>
-        </div>
- 
-        <div class="jumbotron">
-            <h1>Bucket List App</h1>
-            <p class="lead"></p>
-            <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Sign up today</a>
-            </p>
-        </div>
-        <div class="row marketing">
-            <div class="col-lg-6">
-                <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
- 
-            <div class="col-lg-6">
-                <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
-        </div>
- 
-        <footer class="footer">
-            <p>&copy; Company 2015</p>
-        </footer>
- 
     </div>
-</body>
- 
+
+ <h1><h1>
 </html>
+
+
+<!-- <h1>{{ watsonresponseArray[0] }}<h1>
+        <h1>Hello {{ tweetObjsArray[0].tweet }}!</h1> -->
