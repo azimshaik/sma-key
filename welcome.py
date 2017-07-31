@@ -132,11 +132,34 @@ def GetWatson():
         #print result2
         watsonresponse = (json.dumps(result2,indent=2))
         #watsonresponse = (json.loads(result2))
-        #print type(watsonresponse)
+        #print watsonresponse
         watsonresponseArray.append(watsonresponse)
         k+=1
         #print type(watsonresponseArray)
     return jsonify(results=watsonresponseArray)
+
+@app.route('/api/tweets')
+def Gettweets():
+    tweetObjsArray = []
+    watsonresponseArray = []
+    mergeArray = []
+    public_tweets = api.mentions_timeline()
+    for tweet in public_tweets:
+        tweeturl = 'https://twitter.com/'+tweet.user.screen_name+'/status/'+str(tweet.id)
+        tweetObj = Tweet(tweet.id,tweet.user.screen_name, tweet.text, tweeturl)
+        result2 = tone_analyzer.tone(text=tweet.text)
+        tweetObj = json.dumps(tweetObj.__dict__)
+        watsonresponse = (json.dumps(result2,indent=2))
+        mergeT = json.loads(tweetObj)
+        mergeR = json.loads(watsonresponse)
+        mergeTest = dict(mergeT.items() + mergeR.items())
+        mergeTest = json.dumps(mergeTest,indent=2)
+        #print mergeTest
+        mergeArray.append(mergeTest)
+        watsonresponseArray.append(watsonresponse)
+        tweetObjsArray.append(tweetObj)
+    
+    return jsonify(results=mergeArray)
 
 
 @app.route('/api/people')

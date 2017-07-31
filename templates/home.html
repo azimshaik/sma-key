@@ -19,15 +19,19 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $.ajax({
-               url:'/api/watson',
+               url:'/api/tweets',
                success: function(a,b,c){
                    //console.log(a);
                    var FinalData = []; 
                    $.each(a.results,function(i,val){
+                       //console.log(val)
+                       var doc = $.parseJSON(val);
+                       console.log(doc)
                         var myTweet = {
-                        //id: 0,
-                        //tweet: "",
-                        username:"@StaticLine#96",
+                        id: doc.id,
+                        tweet: doc.tweet,
+                        url: doc.url,
+                        username:doc.username,
                         angerScore: 0,
                         disgustScore: 0,
                         fearScore: 0,
@@ -42,7 +46,7 @@
                         agreeablenessScore: 0,
                         emotional_rangeScore: 0
                          };  
-                        var doc = $.parseJSON(val);
+                        
                         //console.log(doc.document_tone.tone_categories);
                         //var val = $.parseJSON(val)
                         $.each(doc.document_tone.tone_categories,function(i,v){
@@ -84,7 +88,7 @@
                             //console.log(myTweet);
                             FinalData.push(myTweet); 
                    });
-                   console.log(JSON.stringify(FinalData)); 
+                   //console.log(JSON.stringify(FinalData)); 
                    $('#my-final-table').dynatable({
 
                           dataset: {
@@ -123,6 +127,7 @@
                     <!--<th data-dynatable-sorts="name">Id</th>-->
                 <th>Username</th>
                 <th>Tweet</th>
+                <th>Url</th>
                 <th>AngerScore</th>
                 <th>DisgustScore</th>
                 <th>FearScore</th>
