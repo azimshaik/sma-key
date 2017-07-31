@@ -55,7 +55,7 @@
                                     //console.log(tone);
                                     switch (tone.tone_id) {
                                         case "anger":
-                                            myTweet.angerScore = tone.score*100; break;
+                                            myTweet.angerScore = Math.floor(tone.score*100); break;
                                         case "disgust":
                                             myTweet.disgustScore = tone.score*100; break; 
                                         case "fear":
